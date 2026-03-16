@@ -10,7 +10,8 @@ import { QuizTab } from "@/components/dashboard/quiz-tab";
 import { MindMapTab } from "@/components/dashboard/mindmap-tab";
 import { StudyPlannerTab } from "@/components/dashboard/study-planner-tab";
 import { ChatTab } from "@/components/dashboard/chat-tab";
-import { Upload, FileText, Layers, Target, Workflow, Calendar, MessageSquare } from "lucide-react";
+import { GamesTab } from "@/components/dashboard/games-tab";
+import { Upload, FileText, Layers, Target, Workflow, Calendar, MessageSquare, Gamepad2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -22,6 +23,7 @@ const TABS = [
   { id: "mindmap", label: "Mind Map", icon: Workflow },
   { id: "planner", label: "Study Plan", icon: Calendar },
   { id: "chat", label: "AI Tutor", icon: MessageSquare },
+  { id: "games", label: "Games", icon: Gamepad2 },
 ] as const;
 
 type TabId = typeof TABS[number]["id"];
@@ -38,6 +40,7 @@ export default function Dashboard() {
       case "mindmap": return <MindMapTab />;
       case "planner": return <StudyPlannerTab />;
       case "chat": return <ChatTab />;
+      case "games": return <GamesTab />;
       default: return null;
     }
   };

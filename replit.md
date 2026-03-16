@@ -30,6 +30,8 @@ AI-powered study platform that helps students convert long lectures, PDFs, and n
 8. **Concept Explainer** - ELI5, Beginner, Intermediate, Advanced levels
 9. **Pomodoro Timer** - 25-minute study session timer
 10. **Gamification** - XP points, streaks (localStorage)
+11. **Study Games** - Memory Match, Speed Quiz, Word Scramble (3 interactive games with XP rewards)
+12. **Landing Page Modes Section** - Highlights Quiz, Flashcards, Planner, and Games with CTA cards
 
 ## Structure
 
