@@ -1,22 +1,24 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Slay The Syllabus - AI-powered study platform API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: ai
+    description: AI study tools
+  - name: openai
+    description: OpenAI chat operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +26,195 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /ai/summarize:
+    post:
+      operationId: summarizeContent
+      tags: [ai]
+      summary: Summarize uploaded content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SummarizeRequest"
+      responses:
+        "200":
+          description: Summary generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SummarizeResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /ai/flashcards:
+    post:
+      operationId: generateFlashcards
+      tags: [ai]
+      summary: Generate flashcards from content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FlashcardsRequest"
+      responses:
+        "200":
+          description: Flashcards generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlashcardsResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /ai/quiz:
+    post:
+      operationId: generateQuiz
+      tags: [ai]
+      summary: Generate quiz from content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizRequest"
+      responses:
+        "200":
+          description: Quiz generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /ai/mindmap:
+    post:
+      operationId: generateMindMap
+      tags: [ai]
+      summary: Generate mind map from content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MindMapRequest"
+      responses:
+        "200":
+          description: Mind map generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MindMapResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /ai/studyplan:
+    post:
+      operationId: generateStudyPlan
+      tags: [ai]
+      summary: Generate personalized study plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudyPlanRequest"
+      responses:
+        "200":
+          description: Study plan generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyPlanResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /ai/explain:
+    post:
+      operationId: explainConcept
+      tags: [ai]
+      summary: Explain a concept at different difficulty levels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExplainRequest"
+      responses:
+        "200":
+          description: Explanation generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExplainResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /ai/chat:
+    post:
+      operationId: chatWithAI
+      tags: [ai]
+      summary: Chat with AI doubt solver
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatRequest"
+      responses:
+        "200":
+          description: AI response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /ai/joke:
+    get:
+      operationId: getStudyJoke
+      tags: [ai]
+      summary: Get a study-related joke for the splash screen
+      responses:
+        "200":
+          description: A joke
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JokeResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +225,316 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required:
+        - error
+        - message
+
+    SummarizeRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          description: Text content to summarize
+        type:
+          type: string
+          enum: [short, bullets, exam_notes, key_concepts, formulas]
+          description: Type of summary to generate
+        language:
+          type: string
+          description: Target language for translation (e.g. 'en', 'es', 'fr', 'hi')
+      required:
+        - content
+        - type
+
+    SummarizeResponse:
+      type: object
+      properties:
+        summary:
+          type: string
+        keyPoints:
+          type: array
+          items:
+            type: string
+        definitions:
+          type: array
+          items:
+            type: object
+            properties:
+              term:
+                type: string
+              definition:
+                type: string
+            required:
+              - term
+              - definition
+      required:
+        - summary
+        - keyPoints
+        - definitions
+
+    FlashcardsRequest:
+      type: object
+      properties:
+        content:
+          type: string
+        count:
+          type: integer
+          minimum: 1
+          maximum: 50
+      required:
+        - content
+
+    Flashcard:
+      type: object
+      properties:
+        id:
+          type: string
+        front:
+          type: string
+        back:
+          type: string
+      required:
+        - id
+        - front
+        - back
+
+    FlashcardsResponse:
+      type: object
+      properties:
+        flashcards:
+          type: array
+          items:
+            $ref: "#/components/schemas/Flashcard"
+      required:
+        - flashcards
+
+    QuizRequest:
+      type: object
+      properties:
+        content:
+          type: string
+        difficulty:
+          type: string
+          enum: [easy, medium, hard, exam]
+        questionType:
+          type: string
+          enum: [mcq, truefalse, fillinblank, short]
+        count:
+          type: integer
+          minimum: 1
+          maximum: 20
+      required:
+        - content
+        - difficulty
+        - questionType
+
+    QuizQuestion:
+      type: object
+      properties:
+        id:
+          type: string
+        question:
+          type: string
+        type:
+          type: string
+        options:
+          type: array
+          items:
+            type: string
+        correctAnswer:
+          type: string
+        explanation:
+          type: string
+      required:
+        - id
+        - question
+        - type
+        - correctAnswer
+        - explanation
+
+    QuizResponse:
+      type: object
+      properties:
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuizQuestion"
+      required:
+        - questions
+
+    MindMapRequest:
+      type: object
+      properties:
+        content:
+          type: string
+      required:
+        - content
+
+    MindMapNode:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        children:
+          type: array
+          items:
+            $ref: "#/components/schemas/MindMapNode"
+      required:
+        - id
+        - label
+        - children
+
+    MindMapResponse:
+      type: object
+      properties:
+        root:
+          $ref: "#/components/schemas/MindMapNode"
+        title:
+          type: string
+      required:
+        - root
+        - title
+
+    StudyPlanRequest:
+      type: object
+      properties:
+        syllabus:
+          type: string
+        examDate:
+          type: string
+        hoursPerDay:
+          type: number
+      required:
+        - syllabus
+        - examDate
+        - hoursPerDay
+
+    StudyPlanDay:
+      type: object
+      properties:
+        day:
+          type: integer
+        date:
+          type: string
+        topics:
+          type: array
+          items:
+            type: string
+        hours:
+          type: number
+        activities:
+          type: array
+          items:
+            type: string
+      required:
+        - day
+        - date
+        - topics
+        - hours
+        - activities
+
+    StudyPlanResponse:
+      type: object
+      properties:
+        plan:
+          type: array
+          items:
+            $ref: "#/components/schemas/StudyPlanDay"
+        totalDays:
+          type: integer
+        tips:
+          type: array
+          items:
+            type: string
+      required:
+        - plan
+        - totalDays
+        - tips
+
+    ExplainRequest:
+      type: object
+      properties:
+        concept:
+          type: string
+        level:
+          type: string
+          enum: [eli5, beginner, intermediate, advanced]
+      required:
+        - concept
+        - level
+
+    ExplainResponse:
+      type: object
+      properties:
+        explanation:
+          type: string
+        level:
+          type: string
+        examples:
+          type: array
+          items:
+            type: string
+        analogy:
+          type: string
+      required:
+        - explanation
+        - level
+        - examples
+
+    ChatMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+      required:
+        - role
+        - content
+
+    ChatRequest:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChatMessage"
+        context:
+          type: string
+          description: Optional study context/notes
+      required:
+        - messages
+
+    ChatResponse:
+      type: object
+      properties:
+        reply:
+          type: string
+        suggestions:
+          type: array
+          items:
+            type: string
+      required:
+        - reply
+        - suggestions
+
+    JokeResponse:
+      type: object
+      properties:
+        joke:
+          type: string
+        punchline:
+          type: string
+      required:
+        - joke
+        - punchline

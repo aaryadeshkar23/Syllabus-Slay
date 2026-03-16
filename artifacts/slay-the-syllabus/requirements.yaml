@@ -1,0 +1,20 @@
+packages:
+  "framer-motion": "For stunning page transitions, glassmorphism card pop-ins, and flashcard flips"
+  "zustand": "For global study state management (content, gamification XP)"
+  "react-markdown": "To beautifully render AI responses and summaries"
+  "canvas-confetti": "Gamification celebration when getting a quiz 100% or completing tasks"
+  "@types/canvas-confetti": "Types for canvas-confetti"
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility for merging tailwind classes without style conflicts"
+
+images:
+  - path: "artifacts/slay-the-syllabus/public/images/hero-bg.png"
+    description: "Abstract 3D glassmorphism floating geometric shapes in deep dark navy, vibrant violet, and glowing neon cyan. High quality, premium modern UI background, 8k resolution, cinematic lighting."
+    aspect_ratio: "16:9"
+  - path: "artifacts/slay-the-syllabus/public/images/avatar.png"
+    description: "A cool, stylized 3D illustrated avatar of a student wearing glowing headphones, neon cyberpunk vibes, purple and blue lighting."
+    aspect_ratio: "1:1"
+
+notes:
+  - Using generated Orval hooks from @workspace/api-client-react
+  - Expects dark mode styling by default

@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Slay The Syllabus"
+version = "1.0.0"
+id = "artifacts/slay-the-syllabus"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+localPort = 18138
+name = "web"
+paths = ["/"]
+
+[services.development]
+run = "pnpm --filter @workspace/slay-the-syllabus run dev"
+
+[services.env]
+PORT = "18138"
+BASE_PATH = "/"
+
+[services.production]
+build = ["pnpm", "--filter", "@workspace/slay-the-syllabus", "run", "build"]
+publicDir = "artifacts/slay-the-syllabus/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"

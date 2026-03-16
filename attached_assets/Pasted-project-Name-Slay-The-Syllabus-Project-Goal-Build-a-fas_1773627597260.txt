@@ -1,0 +1,554 @@
+project Name: Slay The Syllabus
+
+Project Goal:
+Build a fast, scalable, and AI-powered web platform that helps students convert long lectures, PDFs, voice notes, images, and videos into structured study materials such as summaries, key concepts, flashcards, quizzes, mind maps, and revision notes.Add attractive themes with some pictures and display a joke on 1st screen before opening the website....The platform should improve learning efficiency and exam preparation through AI-powered tools and gamified learning.
+
+Core Functionalities
+1. Smart Content Upload System
+
+Users should be able to upload or input learning content in multiple formats:
+
+PDF lecture notes
+
+Handwritten notes images
+
+Video lectures
+
+Voice recordings
+
+YouTube video links
+
+Text notes
+
+Full syllabus documents
+
+The AI should process the uploaded content and automatically generate structured study materials.
+
+AI Content Processing Features
+
+After uploading content, the system should generate:
+
+1. AI Summary Generator
+
+Short summaries
+
+Bullet point notes
+
+Exam revision notes
+
+Key concepts
+
+Important definitions
+
+Important formulas
+
+Summaries must support multi-language translation so students can read them in their preferred language.
+
+2. Flashcards Generator
+
+Automatically generate flashcards:
+
+Question on front
+
+Answer on back
+
+Shuffle mode
+
+Spaced repetition learning
+
+Save flashcards for later revision
+
+3. AI Quiz Generator
+
+Create quizzes based on the uploaded content.
+
+Quiz types:
+
+Multiple choice questions
+
+True/False
+
+Fill in the blanks
+
+Short answer
+
+Difficulty levels:
+
+Easy
+
+Medium
+
+Hard
+
+Exam-level
+
+Provide explanations for answers.
+
+4. Mind Map Generator
+
+Automatically convert study material into a visual concept map showing:
+
+Main topic
+
+Subtopics
+
+Relationships between concepts
+
+5. Video-to-Notes Feature
+
+Extract notes from video lectures:
+
+Timestamped key points
+
+Summary
+
+Important concepts
+
+Quiz questions
+
+6. Voice Notes to Summary
+
+Students can record voice notes and AI will convert them into:
+
+Written notes
+
+Summary
+
+Flashcards
+
+Quiz questions
+
+7. Handwritten Notes Scanner
+
+Students upload photos of handwritten notes and AI will:
+
+Convert them into text
+
+Generate summaries
+
+Generate flashcards and quizzes
+
+Advanced AI Learning Features
+1. Difficulty Level Explanation
+
+AI should explain concepts at different levels:
+
+Beginner explanation
+
+Intermediate explanation
+
+Advanced exam-level explanation
+
+Also include “Explain Like I’m 5” mode for very simple explanations.
+
+2. AI Study Planner
+
+Students input:
+
+Exam date
+
+Syllabus
+
+Available study hours
+
+AI generates a personalized study plan.
+
+3. AI Learning Pathway
+
+AI analyzes:
+
+Student performance
+
+Weak topics
+
+Quiz results
+
+Then suggests a structured learning path.
+
+4. Weak Topic Detector
+
+Based on quiz performance:
+
+Detect weak topics
+
+Suggest revision material
+
+Recommend practice questions
+
+5. AI Revision Mode
+
+Before exams, AI generates:
+
+Most important concepts
+
+Quick revision notes
+
+High probability exam questions
+
+Last-minute revision sheets
+
+6. Smart Formula Sheet Generator
+
+Automatically generate formula sheets for subjects like:
+
+Physics
+
+Chemistry
+
+Mathematics
+
+7. YouTube Lecture Analyzer
+
+Students paste a YouTube link.
+
+AI generates:
+
+Summary
+
+Notes
+
+Flashcards
+
+Quiz questions
+
+8. Doubt Solving Chatbot
+
+An AI chatbot that can:
+
+Answer student questions
+
+Explain concepts
+
+Solve doubts step-by-step
+
+9. 1-Click Exam Preparation
+
+Students upload their syllabus.
+
+AI automatically generates:
+
+Study plan
+
+Summaries
+
+Flashcards
+
+Quizzes
+
+Revision material
+
+Gamification Features
+
+To make studying enjoyable:
+
+Daily study streaks
+
+XP points
+
+Leaderboard
+
+Learning challenges
+
+Quiz competitions
+
+Study achievements
+
+Mini learning games
+
+Social Learning Features
+Group Study Rooms
+
+Students can:
+
+Join study rooms
+
+Solve quizzes together
+
+Discuss doubts
+
+Compete in learning games
+
+Productivity Tools
+Pomodoro Study Timer
+
+Built-in productivity timer that includes:
+
+25-minute study sessions
+
+Break reminders
+
+Study session tracking
+
+User Dashboard Sections
+
+The website dashboard should contain the following sections:
+
+Upload Content
+
+Summary
+
+Key Concepts
+
+Flashcards
+
+Quiz Generator
+
+Mind Map
+
+Study Planner
+
+AI Doubt Solver
+
+Revision Mode
+
+Weak Topic Analysis
+
+Progress Tracker
+
+Personalization Features
+
+Users should be able to customize their interface with themes such as:
+
+Cartoon themes
+
+Anime themes
+
+Minimal study theme
+
+Dark mode
+
+Custom themes for boys and girls
+
+Technical Architecture
+Frontend
+
+Static frontend
+
+Framework: React or Next.js
+
+Hosted on Vercel
+
+Requirements:
+
+Responsive design for mobile, tablet, and desktop
+
+Attractive and modern UI
+
+Fast loading speed
+
+Backend
+
+Backend should use API architecture.
+
+Suggested technologies:
+
+Node.js / Python backend
+
+Hosted on Render
+
+Serverless functions using AWS Lambda
+
+AWS Infrastructure
+
+Use services from Amazon Web Services:
+
+Amazon S3 for storing files
+
+Amazon DynamoDB or Amazon RDS for database
+
+Amazon CloudFront for faster website loading
+
+Amazon API Gateway for backend APIs
+
+Performance Requirements
+
+The website must:
+
+Work fast without lag
+
+Handle multiple users simultaneously
+
+Use optimized APIs
+
+Cache frequently used data
+
+Use CDN for faster content delivery
+
+Device Compatibility
+
+The website must be fully responsive and work on:
+
+Mobile phones
+
+Tablets
+
+Laptops
+
+Desktop computers
+
+Error Handling
+
+The platform should include:
+
+Strong backend validation
+
+Error logging
+
+Fail-safe AI processing
+
+Automatic retry for failed requests
+
+The system should run smoothly without errors. Improve my existing website by adding a modern and attractive theme.
+
+Requirements:
+
+- Add a modern AI-style dark theme (dark background with purple/blue gradient highlights).
+- Use clean fonts like Poppins or Inter.
+- Add a responsive navbar and smooth hover animations.
+- Improve the UI with cards, rounded buttons, and soft shadows.
+- Add a glassmorphism style for sections (blur background, transparent cards).
+- Ensure the website is fully responsive for mobile and desktop.
+- Use clean HTML, CSS, and optionally Bootstrap or Tailwind CSS.
+- Keep the website fast and lightweight.
+
+This website is an AI-powered study tool that converts long lectures, PDFs, or videos into summaries, key points, and revision notes. The theme should look modern, student-friendly, and professional like an AI startup website.
+
+Please provide the complete updated HTML and CSS code.
+
+The uploaded content is not getting summarised and add some pictures and colours so that it looks attractive....
+You are a senior full-stack engineer. Rebuild and stabilize my AI study website so that all features work reliably every time without breaking.
+
+Current issues:
+The website works once but then shows "error occurred". AI features stop working after the first request.
+
+Your task is to redesign the project so this never happens again.
+
+Requirements:
+
+1. Stable Backend
+- Build a proper backend using Node.js (Express) or Python (FastAPI).
+- Ensure the server stays active and handles multiple requests.
+- Add async/await correctly to avoid crashes.
+
+2. AI Processing System
+Implement a dedicated AI module that handles:
+- Text summarization
+- Key points extraction
+- Flashcard generation
+- Quiz generation
+- Study plan generation
+- YouTube lecture analysis
+
+3. Input Handling
+The system must accept:
+- PDF uploads
+- Text input
+- YouTube video links
+
+4. Reliability Features
+Add:
+- request queue system
+- retry mechanism for AI calls
+- rate limit protection
+- loading indicators
+- proper error messages instead of "error occurred"
+
+5. Error Handling
+Add full try/catch handling so the server never crashes if:
+- API fails
+- user uploads invalid file
+- YouTube transcript fails
+
+6. Logging
+Add console logs and debugging messages so errors can be traced.
+
+7. Performance Optimization
+- cache previous results
+- prevent duplicate requests
+- optimize file parsing
+
+8. User Experience
+Make sure users can run the AI tools unlimited times without the site breaking.
+
+9. Code Structure
+Organize project into:
+frontend/
+backend/
+ai_services/
+utils/
+
+10. Final Output
+Return complete working code and clearly explain where each file goes.
+
+The final system must be production-ready and stable for a hackathon demo....You are a senior full-stack and backend engineer. Fix and rebuild my AI study website so that all AI features and APIs work reliably every time without failing.
+
+Current Problems:
+
+- The website works only once and then shows "Error occurred".
+- AI features stop working after the first request.
+- Uploaded content is not always processed.
+- Flashcards, quiz, study plan, and YouTube lecture analyzer sometimes fail.
+- The API stops responding after one request.
+
+Your Goal:
+Create a stable, production-ready AI system that works repeatedly without crashing.
+
+Backend Requirements:
+
+1. Build a stable backend using Node.js with Express (or Python FastAPI).
+2. Ensure the server can handle multiple requests continuously.
+3. Use async/await correctly to avoid promise errors.
+
+API Integration:
+
+1. Integrate a reliable AI API for:
+   - Summarization
+   - Key point extraction
+   - Flashcard generation
+   - Quiz generation
+   - Study plan generation
+   - YouTube lecture summarization
+2. Store API keys securely using Replit environment variables or secrets.
+3. Add automatic retry if an API request fails.
+4. Implement rate-limit handling so multiple requests do not crash the system.
+
+Input Handling:
+The system must accept:
+
+- PDF uploads
+- Text input
+- YouTube video links
+
+For PDFs:
+
+- Extract text using a PDF parsing library.
+
+For YouTube:
+
+- Extract transcript automatically and summarize it.
+
+Reliability Features:
+
+- Add proper try/catch error handling for every API request.
+- Add logging so errors can be tracked in the console.
+- Add loading indicators while the AI processes requests.
+- Add validation to prevent empty inputs.
+- Add a queue system to prevent simultaneous API crashes.
+
+Optimization:
+
+- Cache previous results to reduce API calls.
+- Prevent duplicate requests from the same user.
+- Optimize file processing speed.
+
+Frontend:
+Ensure every button works correctly:
+
+- Summarize
+- Generate flashcards
+- Generate quiz
+- Generate study plan
+- Analyze YouTube lecture
+
+Output:
+Provide the full working code structure and explain clearly where each file should be placed in the project so the system runs properly on Replit.
