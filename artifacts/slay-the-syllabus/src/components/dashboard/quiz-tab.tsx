@@ -210,7 +210,7 @@ export function QuizTab() {
           <p className="text-2xl text-white/80 mb-8">You scored <span className="text-green-400 font-bold">{score}</span> out of {count}</p>
           
           <button
-            onClick={() => setQuizFinished(false) || generate({ data: { content, difficulty, questionType: "mcq", count } })}
+            onClick={handleStart}
             className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all flex items-center gap-2 mx-auto border border-white/20"
           >
             <RefreshCcw className="w-5 h-5" /> Retake Quiz

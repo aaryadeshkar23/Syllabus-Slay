@@ -58,6 +58,7 @@ artifacts-monorepo/
 - `POST /api/ai/studyplan` - Generate study plan with exam date
 - `POST /api/ai/explain` - Explain concept at a level (eli5/beginner/intermediate/advanced)
 - `POST /api/ai/chat` - AI doubt solver chat
+- `POST /api/ai/youtube` - Extract transcript from YouTube URL and generate study notes
 
 ## Environment Variables
 

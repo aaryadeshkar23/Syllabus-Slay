@@ -1,0 +1,75 @@
+You are a senior AI full-stack developer. Improve and fix my AI study website so that all features work correctly and reliably.
+
+Main Goal of the Website:
+The primary goal is to summarize learning content and convert it into useful study material. The input can be:
+
+- Text input
+- PDF documents
+- Long YouTube lectures
+
+The system must analyze the content and generate:
+
+- Short summary
+- Key points
+- Flashcards
+- Quiz questions with correct answers
+- Study plan
+- Mind map visualization
+
+Current Problems to Fix:
+
+1. Flashcards are not being generated.
+   Fix the flashcard generator so that it correctly creates question–answer flashcards from the summarized content.
+
+2. Quiz answers are incorrect.
+   Currently every question shows option 1 as the answer. Fix the logic so that:
+
+- Each question has 4 options
+- The correct answer can be any option
+- The answer is correctly matched with the content.
+
+3. Mind map is not visible or not properly structured.
+   Create a clear interactive mind map based on key topics extracted from the content.
+
+4. Improve summarization.
+   The system should focus on extracting the most important information from:
+
+- uploaded PDFs
+- pasted text
+- YouTube lecture transcripts.
+
+5. YouTube lecture analyzer.
+   Add a reliable system to extract YouTube transcripts and generate:
+
+- lecture summary
+- key concepts
+- timestamps
+- revision notes.
+
+6. Add small educational games.
+   Add simple learning games related to the generated content such as:
+
+- quiz challenge
+- flashcard memory game
+- rapid revision challenge.
+
+7. Make the system stable.
+   Ensure the AI processing works multiple times without showing errors.
+
+Add:
+
+- proper API integration
+- async/await handling
+- try/catch error handling
+- rate limit protection
+- loading indicators.
+
+8. Improve UI.
+   Make the website visually attractive for students with:
+
+- clear sections
+- animated results
+- easy navigation between summary, flashcards, quiz, and mind map.
+
+Output:
+Provide the corrected working code and explain where each file should be placed in the project so that the website runs properly on Replit.
