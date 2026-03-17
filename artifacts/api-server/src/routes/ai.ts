@@ -29,52 +29,140 @@ async function callAI(prompt: string, systemPrompt?: string): Promise<string> {
   return response.choices[0]?.message?.content ?? "{}";
 }
 
-async function getYouTubeTranscript(url: string): Promise<string> {
-  // Extract video ID from URL
+function extractVideoId(url: string): string {
   const patterns = [
     /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
     /youtube\.com\/shorts\/([^&\n?#]+)/,
   ];
-  let videoId = "";
   for (const pat of patterns) {
     const m = url.match(pat);
-    if (m) { videoId = m[1]; break; }
+    if (m) return m[1];
   }
-  if (!videoId) throw new Error("Could not extract YouTube video ID from URL");
+  // If it looks like a raw 11-char video ID, use it directly
+  if (/^[a-zA-Z0-9_-]{11}$/.test(url.trim())) return url.trim();
+  throw new Error("Could not extract YouTube video ID. Please paste a valid YouTube URL (e.g. https://youtube.com/watch?v=...)");
+}
 
-  // Use the YouTube transcript API (no auth needed for public videos with auto-captions)
-  const apiUrl = `https://www.youtube.com/watch?v=${videoId}`;
-  const response = await fetch(apiUrl, {
-    headers: { "User-Agent": "Mozilla/5.0 (compatible; bot)" }
-  });
-  const html = await response.text();
+function decodeHtmlEntities(text: string): string {
+  return text
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(parseInt(d, 10)));
+}
 
-  // Extract captions URL from YouTube's inline JSON
-  const captionsMatch = html.match(/"captionTracks":\[.*?"baseUrl":"(.*?)"/);
-  if (!captionsMatch) {
-    throw new Error("No transcript available for this video. Please try a video with subtitles/captions enabled.");
+async function getYouTubeTranscript(url: string): Promise<string> {
+  const videoId = extractVideoId(url);
+
+  // Step 1: Try YouTube InnerTube API (Android client — no auth needed)
+  const ANDROID_VERSION = "20.10.38";
+  const INNERTUBE_URL = "https://www.youtube.com/youtubei/v1/player?prettyPrint=false";
+
+  let captionTracks: { baseUrl: string; languageCode: string; name?: { simpleText?: string } }[] | null = null;
+
+  try {
+    const playerRes = await fetch(INNERTUBE_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": `com.google.android.youtube/${ANDROID_VERSION} (Linux; U; Android 14)`,
+      },
+      body: JSON.stringify({
+        context: { client: { clientName: "ANDROID", clientVersion: ANDROID_VERSION } },
+        videoId,
+      }),
+    });
+
+    if (playerRes.ok) {
+      const playerJson = await playerRes.json() as {
+        captions?: {
+          playerCaptionsTracklistRenderer?: {
+            captionTracks?: { baseUrl: string; languageCode: string; name?: { simpleText?: string } }[];
+          };
+        };
+        playabilityStatus?: { status?: string };
+      };
+
+      if (playerJson.playabilityStatus?.status === "ERROR" || playerJson.playabilityStatus?.status === "LOGIN_REQUIRED") {
+        throw new Error("This video is private, age-restricted, or unavailable.");
+      }
+
+      captionTracks = playerJson?.captions?.playerCaptionsTracklistRenderer?.captionTracks ?? null;
+    }
+  } catch (innerErr: unknown) {
+    const msg = innerErr instanceof Error ? innerErr.message : String(innerErr);
+    if (msg.includes("private") || msg.includes("unavailable")) throw innerErr;
+    // Fall through to web scraping approach
   }
 
-  const captionsUrl = captionsMatch[1].replace(/\\u0026/g, "&").replace(/\\\//g, "/");
-  const captionsResponse = await fetch(captionsUrl);
-  const captionsXml = await captionsResponse.text();
+  // Step 2: Fall back to web page scraping if InnerTube didn't give captions
+  if (!captionTracks || captionTracks.length === 0) {
+    const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+    const pageRes = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
+      headers: { "User-Agent": UA, "Accept-Language": "en-US,en;q=0.9" },
+    });
+    const html = await pageRes.text();
 
-  // Parse XML captions into plain text
-  const textMatches = captionsXml.matchAll(/<text[^>]*>(.*?)<\/text>/gs);
+    if (html.includes('class="g-recaptcha"')) {
+      throw new Error("YouTube is rate-limiting this server. Please try again in a few minutes.");
+    }
+    if (!html.includes('"playabilityStatus":')) {
+      throw new Error("This video is unavailable or does not exist.");
+    }
+
+    // Extract captionTracks from the inline JSON
+    const match = html.match(/"captionTracks":\s*(\[.*?\])\s*,\s*"audioTracks"/s);
+    if (match) {
+      try {
+        captionTracks = JSON.parse(match[1]);
+      } catch {
+        captionTracks = null;
+      }
+    }
+  }
+
+  if (!captionTracks || captionTracks.length === 0) {
+    throw new Error("No captions or transcripts available for this video. Please try a video with subtitles/captions enabled (auto-generated captions work too).");
+  }
+
+  // Prefer English captions
+  const track = captionTracks.find(t => t.languageCode?.startsWith("en")) ?? captionTracks[0];
+  const captionUrl = track.baseUrl.replace(/\\u0026/g, "&");
+
+  const captionRes = await fetch(captionUrl);
+  if (!captionRes.ok) {
+    throw new Error("Failed to download captions. Please try again.");
+  }
+  const xml = await captionRes.text();
+
+  // Parse both <text start="..." dur="...">content</text> (classic) and <p t="..." d="...">...</p> (srv3) formats
   const lines: string[] = [];
-  for (const m of textMatches) {
-    const text = m[1]
-      .replace(/&amp;/g, "&")
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">")
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      .replace(/<[^>]*>/g, "")
-      .trim();
-    if (text) lines.push(text);
+
+  // Classic XML format
+  const classicMatches = xml.matchAll(/<text[^>]*>([^<]*)<\/text>/g);
+  for (const m of classicMatches) {
+    const t = decodeHtmlEntities(m[1]).replace(/<[^>]*>/g, "").trim();
+    if (t) lines.push(t);
   }
 
-  if (lines.length === 0) throw new Error("Transcript is empty. Try a different video.");
+  // srv3 / timedtext format
+  if (lines.length === 0) {
+    const srv3Matches = xml.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g);
+    for (const m of srv3Matches) {
+      const inner = m[1].replace(/<s[^>]*>([^<]*)<\/s>/g, "$1").replace(/<[^>]*>/g, "");
+      const t = decodeHtmlEntities(inner).trim();
+      if (t) lines.push(t);
+    }
+  }
+
+  if (lines.length === 0) {
+    throw new Error("Could not parse the transcript. The video may have unsupported caption format.");
+  }
+
   return lines.join(" ");
 }
 

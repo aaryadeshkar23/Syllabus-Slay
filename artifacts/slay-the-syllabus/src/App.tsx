@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -35,18 +35,17 @@ function Router() {
 }
 
 function AppContent() {
-  const { hasSeenSplash, setHasSeenSplash, checkStreak } = useStudyStore();
+  // Show splash every time the website is opened (session-only, not persisted)
+  const [splashDone, setSplashDone] = useState(false);
+  const { checkStreak } = useStudyStore();
 
   useEffect(() => {
-    // Check and update gamification streak on load
     checkStreak();
   }, [checkStreak]);
 
   return (
     <>
-      {!hasSeenSplash && <SplashScreen onComplete={() => setHasSeenSplash(true)} />}
-      
-      {/* Show main app regardless, but splash sits on top based on z-index and conditional rendering */}
+      {!splashDone && <SplashScreen onComplete={() => setSplashDone(true)} />}
       <Router />
       <Toaster />
     </>
